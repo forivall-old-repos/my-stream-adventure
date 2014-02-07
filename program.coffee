@@ -1,4 +1,6 @@
 through = require 'through'
-upper = through (buf) -> @queue(buf.toUpperCase())
+split = require 'split'
+lower = false
+change_case = through (buf) -> @queue((if (lower = !lower) then buf.toLowerCase() else buf.toUpperCase()) + '\n')
 process.stdin.setEncoding('utf8')
-process.stdin.pipe(upper).pipe(process.stdout)
+process.stdin.pipe(split()).pipe(change_case).pipe(process.stdout)
