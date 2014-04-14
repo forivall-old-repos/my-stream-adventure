@@ -1,6 +1,4 @@
-through = require 'through'
-split = require 'split'
-lower = false
-change_case = through (buf) -> @queue((if (lower = !lower) then buf.toLowerCase() else buf.toUpperCase()) + '\n')
+concat = require 'concat-stream'
 process.stdin.setEncoding('utf8')
-process.stdin.pipe(split()).pipe(change_case).pipe(process.stdout)
+process.stdin.pipe concat (buf) ->
+  process.stdout.write [].slice.apply(buf).reverse().join('')
